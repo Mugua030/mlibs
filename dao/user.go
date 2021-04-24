@@ -25,16 +25,16 @@ var (
 	addr string
 )
 
-func GetUserInfo(uid int64) (User, error) {
+func GetUserInfo(uid int64) (*User, error) {
 	err := Db.QueryRow("select user_id, name, address from user where user_id = ?", uid).Scan(&uid, &name, &addr)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return User{}, nil
+			return nil, nil
 		}
 		//log.Fatal(err)
-		return User{}, errors.Wrap(err, "user: db.queryrow fail")
+		return nil, errors.Wrap(err, "user: db.queryrow fail")
 	}
-	userRow := User{
+	userRow := &User{
 		Uid:  uid,
 		Name: name,
 		Addr: addr,

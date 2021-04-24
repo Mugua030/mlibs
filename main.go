@@ -15,7 +15,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("GetUserInfo fail: %v", err)
 	}
-	if userinfo == (dao.User{})   {
+	if userinfo == nil   {
 		log.Print("no current user uid=", uid)
 		return
 	}
