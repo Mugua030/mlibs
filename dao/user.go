@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"log"
 	"database/sql"
+	"github.com/pkg/errors"
 )
 
 type User struct {
@@ -31,7 +31,8 @@ func GetUserInfo(uid int64) (User, error) {
 		if err == sql.ErrNoRows {
 			return User{}, nil
 		}
-		log.Fatal(err)
+		//log.Fatal(err)
+		return User{}, errors.Wrap(err, "user: db.queryrow fail")
 	}
 	userRow := User{
 		Uid:  uid,

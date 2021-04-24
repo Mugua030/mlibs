@@ -13,10 +13,10 @@ func main() {
 	uid := int64(3)
 	userinfo, err := dao.GetUserInfo(uid)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("GetUserInfo fail: %v", err)
 	}
 	if userinfo == (dao.User{})   {
-		log.Print("no current uid=", uid)
+		log.Print("no current user uid=", uid)
 		return
 	}
 	log.Printf("result=%v", userinfo)

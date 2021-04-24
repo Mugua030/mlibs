@@ -14,7 +14,7 @@ func init() {
 
 func ConnectDB() {
 	var err error
-	Db, err = sql.Open("mysql", "root:telnetdb@tcp(127.0.0.1:3306)/mlibs")
+	Db, err = sql.Open("mysql", "root:telnetdb33@tcp(127.0.0.1:3306)/mlibs")
 	if err != nil {
 		log.Fatal(err)
 	}
