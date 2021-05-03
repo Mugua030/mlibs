@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"mlibs/dao"
+	"mlibs/services"
 )
 
 func main() {
@@ -10,6 +11,7 @@ func main() {
 	defer dao.Db.Close()
 
 	// error process
+	/*
 	uid := int64(3)
 	userinfo, err := dao.GetUserInfo(uid)
 	if err != nil {
@@ -19,5 +21,13 @@ func main() {
 		log.Print("no current user uid=", uid)
 		return
 	}
-	log.Printf("result=%v", userinfo)
+	*/
+
+	// test2
+	orderid := int64(3)
+	orderinfo, err := services.GetOrderInfo(orderid)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("result:: order=%#v",  orderinfo)
 }
