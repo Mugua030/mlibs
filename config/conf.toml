@@ -1,0 +1,5 @@
+[database]
+server = "127.0.0.1"
+port = [8888]
+connection_max = 5000
+enabled = true
