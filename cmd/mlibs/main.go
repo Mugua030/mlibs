@@ -6,6 +6,7 @@ import (
 	//	"mlibs/services"
 	//	"net/http"
 	//	"mlibs/handlers"
+	"mlibs"
 )
 
 func main() {
@@ -35,7 +36,7 @@ func main() {
 		log.Printf("result:: order=%#v",  orderinfo)
 	*/
 
-	app := NewApp()
+	app := mlibs.NewApp()
 
 	if err := app.Run(); err != nil {
 		log.Fatalf("app run fail, error=%v", err)
