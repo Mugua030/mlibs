@@ -4,49 +4,50 @@ import (
 	"context"
 	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
-	"net/http"
+	//	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"mlibs/handlers"
+	//	"mlibs/handlers"
+	"mlibs/transport"
 )
 
 type App struct {
-	ctx    context.Context
-	cancel func()
+	ctx     context.Context
+	cancel  func()
+	Name    string
+	servers []transport.Server
 }
 
-func NewApp() *App {
+func NewApp(opts ...Option) *App {
 	ctx, cancel := context.WithCancel(context.Background())
-	return &App{
+	app := App{
 		ctx:    ctx,
 		cancel: cancel,
 	}
+	for _, o := range opts {
+		o(&app)
+	}
+
+	return &app
 }
 
 func (a *App) Run() error {
-	// http server
+	// all server go to run
 	errgo, ctx := errgroup.WithContext(a.ctx)
 
-	errgo.Go(func() error {
-		//http.HandleFunc("/hello", handlers.HelloHandler)
-		//return http.ListenAndServe(":8888", nil)
-		muxSv := http.NewServeMux()
-		muxSv.Handle("/hello", http.HandlerFunc(handlers.HelloHandler))
-
-		addr := ":8888"
-		srv := http.Server{
-			Addr:    addr,
-			Handler: muxSv,
-		}
-		go func() {
+	for _, tsrv := range a.servers {
+		srv := tsrv
+		errgo.Go(func() error {
+			return srv.Start()
+		})
+		errgo.Go(func() error {
 			<-ctx.Done()
-			srv.Shutdown(context.Background())
-		}()
+			return srv.Stop()
+		})
+	}
 
-		return srv.ListenAndServe()
-	})
 	// signal process
 	stopCh := make(chan os.Signal, 1)
 	errgo.Go(func() error {
@@ -62,7 +63,7 @@ func (a *App) Run() error {
 	})
 
 	if err := errgo.Wait(); err != nil {
-		return errors.New(err.Error())
+		return errors.Wrap(err, "app run stoped")
 	}
 
 	return nil
