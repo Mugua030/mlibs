@@ -12,3 +12,7 @@ func Name(name string) Option {
 func Server(srv ...transport.Server) Option {
 	return func(a *App) { a.servers = srv }
 }
+
+func Version(vs string) Option {
+	return func(a *App) { a.Version = vs }
+}

@@ -1,5 +1,11 @@
 package mlibs
 
+import (
+	"mlibs/transport/grpc"
+	"mlibs/transport/http"
+	"testing"
+)
+
 func TestApp(t *testing.T) {
 	httpSrv := http.NewServer()
 	grpcSrv := grpc.NewServer()

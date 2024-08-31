@@ -2,8 +2,10 @@ package mlibs
 
 import (
 	"context"
+
 	"github.com/pkg/errors"
 	"golang.org/x/sync/errgroup"
+
 	//	"net/http"
 	"os"
 	"os/signal"
@@ -17,6 +19,7 @@ type App struct {
 	ctx     context.Context
 	cancel  func()
 	Name    string
+	Version string
 	servers []transport.Server
 }
 
